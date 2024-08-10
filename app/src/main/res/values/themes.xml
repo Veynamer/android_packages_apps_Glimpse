@@ -6,6 +6,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme -->
     <style name="Theme.Glimpse" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/glimpse_primary</item>
+        <item name="colorSecondary">@color/glimpse_secondary</item>
+        <item name="colorAccent">@color/glimpse_accent</item>
+        <item name="android:fontFamily">@font/glimpse_font_family</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
@@ -15,8 +19,9 @@
 
     <!-- Collapsing toolbar style -->
     <style name="Theme.Glimpse.ToolbarCollapsed" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/glimpse_font_family</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="Theme.Glimpse.ToolbarExpanded" parent="Theme.Glimpse.ToolbarCollapsed">
@@ -28,16 +33,22 @@
     <style name="Theme.Glimpse.TopAppBarOption">
         <item name="android:iconTint">?attr/colorOnSurface</item>
         <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <!-- Bottom app bar option -->
     <style name="Theme.Glimpse.BottomAppBarOption">
         <item name="android:iconTint">?attr/colorOnSurface</item>
         <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <!-- Media viewer -->
     <style name="Theme.Glimpse.MediaViewer" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/glimpse_primary_dark</item>
+        <item name="colorSecondary">@color/glimpse_secondary_dark</item>
+        <item name="colorAccent">@color/glimpse_accent_dark</item>
+        <item name="android:fontFamily">@font/glimpse_font_family</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
@@ -61,6 +72,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="rippleColor">?attr/colorControlHighlight</item>
+        <item name="android:elevation">4dp</item>
     </style>
 
     <!-- Media info bottom sheet dialog -->
@@ -81,6 +93,7 @@
     <style name="Theme.Glimpse.MediaInfoBottomSheetDialog.ListItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:elevation">2dp</item>
     </style>
 
     <!-- Set wallpaper dialog theme -->
