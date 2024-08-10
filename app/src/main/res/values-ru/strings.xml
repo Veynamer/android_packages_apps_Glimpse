@@ -12,7 +12,7 @@
     <string name="library_title">Библиотека</string>
     <string name="album_favorites">Закладки</string>
     <string name="album_trash">Корзина</string>
-    <string name="album_reels">Reels</string>
+    <string name="album_reels">Главная</string>
     <string name="album_photos">Фото</string>
     <string name="album_videos">Видео</string>
     <plurals name="album_thumbnail_items">
