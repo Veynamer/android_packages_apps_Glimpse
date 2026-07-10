@@ -243,6 +243,28 @@ java_import {
 }
 
 android_library_import {
+    name: "Glimpse_com.github.bumptech.glide_compose",
+    aars: ["com/github/bumptech/glide/compose/1.0.0-beta09/compose-1.0.0-beta09.aar"],
+    sdk_version: "36",
+    min_sdk_version: "30",
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    static_libs: [
+        "androidx.compose.foundation_foundation",
+        "androidx.compose.ui_ui",
+        "androidx.core_core-ktx",
+        "androidx.lifecycle_lifecycle-runtime-compose",
+        "Glimpse_com.github.bumptech.glide_glide",
+        "Glimpse_com.github.bumptech.glide_ktx",
+        "Glimpse_com.github.bumptech.glide_recyclerview-integration",
+        "Glimpse_com.google.accompanist_accompanist-drawablepainter",
+        "kotlin-stdlib",
+    ],
+}
+
+android_library_import {
     name: "Glimpse_com.github.bumptech.glide_disklrucache",
     aars: ["com/github/bumptech/glide/disklrucache/5.0.7/disklrucache-5.0.7.aar"],
     sdk_version: "36",
@@ -290,8 +312,25 @@ android_library_import {
 }
 
 android_library_import {
+    name: "Glimpse_com.github.bumptech.glide_ktx",
+    aars: ["com/github/bumptech/glide/ktx/1.0.0-beta09/ktx-1.0.0-beta09.aar"],
+    sdk_version: "36",
+    min_sdk_version: "30",
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    static_libs: [
+        "androidx.core_core-ktx",
+        "Glimpse_com.github.bumptech.glide_glide",
+        "kotlin-stdlib",
+        "kotlinx-coroutines-core",
+    ],
+}
+
+android_library_import {
     name: "Glimpse_com.github.bumptech.glide_okhttp3-integration",
-    aars: ["com/github/bumptech/glide/okhttp3-integration/5.0.5/okhttp3-integration-5.0.5.aar"],
+    aars: ["com/github/bumptech/glide/okhttp3-integration/5.0.7/okhttp3-integration-5.0.7.aar"],
     sdk_version: "36",
     min_sdk_version: "30",
     apex_available: [
@@ -302,6 +341,33 @@ android_library_import {
         "androidx.annotation_annotation",
         "Glimpse_com.github.bumptech.glide_glide",
         "Glimpse_com.squareup.okhttp3_okhttp",
+    ],
+}
+
+android_library_import {
+    name: "Glimpse_com.github.bumptech.glide_recyclerview-integration",
+    aars: ["com/github/bumptech/glide/recyclerview-integration/5.0.7/recyclerview-integration-5.0.7.aar"],
+    sdk_version: "36",
+    min_sdk_version: "30",
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    static_libs: [
+    ],
+}
+
+android_library_import {
+    name: "Glimpse_com.google.accompanist_accompanist-drawablepainter",
+    aars: ["com/google/accompanist/accompanist-drawablepainter/0.25.1/accompanist-drawablepainter-0.25.1.aar"],
+    sdk_version: "36",
+    min_sdk_version: "30",
+    apex_available: [
+        "//apex_available:platform",
+        "//apex_available:anyapex",
+    ],
+    static_libs: [
+        "androidx.compose.ui_ui",
     ],
 }
 
