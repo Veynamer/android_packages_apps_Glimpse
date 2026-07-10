@@ -1,0 +1,64 @@
+#
+# TEMPORARY workflow.
+#
+# Regenerates app/Android.bp + app/libs/* via `./gradlew app:generateBp` and
+# pushes the result straight to the branch that triggered it. This exists
+# purely to bootstrap the Android.bp/libs prebuilts for the jxl-coder-glide
+# dependency from a machine (the runner) that actually has network access to
+# Maven Central, since that can't be done from this sandbox.
+#
+# Delete this file once the generated files have been committed - the
+# regular build.yml workflow already *verifies* Android.bp is up to date on
+# every push, it doesn't need to auto-commit on every run.
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions):
+#   GH_PAT          - a Personal Access Token with "repo" (contents: write)
+#                      permission, used to push the commit back. If you don't
+#                      set this, the workflow falls back to the built-in
+#                      GITHUB_TOKEN, which works fine unless your branch
+#                      protection rules require a PAT or a specific actor.
+#   GIT_USER_NAME   - optional, display name for the commit author.
+#   GIT_USER_EMAIL  - optional, email for the commit author.
+#
+
+name: Generate Android.bp (temporary)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-bp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Generate Android.bp
+        run: ./gradlew app:generateBp
+
+      - name: Commit and push
+        run: |
+          git config user.name "${{ secrets.GIT_USER_NAME || 'github-actions[bot]' }}"
+          git config user.email "${{ secrets.GIT_USER_EMAIL || '41898282+github-actions[bot]@users.noreply.github.com' }}"
+
+          if [[ -z $(git status -s) ]]; then
+            echo "Nothing to commit, Android.bp is already up to date."
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "app: Regenerate Android.bp"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
