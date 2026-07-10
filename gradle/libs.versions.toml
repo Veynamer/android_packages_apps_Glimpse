@@ -12,6 +12,11 @@ core = "1.18.0-alpha01"
 exifinterface = "1.4.0-alpha01"
 fragment = "1.8.9"
 glide = "5.0.5"
+jxlCoderGlide = "2.6.1"
+# NOTE: the KSP plugin version is tied to the Kotlin compiler version in use.
+# Update the "-1.0.x" suffix to match whatever Kotlin version AGP's built-in
+# Kotlin support pulls in for this project if the build fails to resolve it.
+ksp = "2.2.0-2.0.2"
 lifecycle = "2.10.0-alpha04"
 material = "1.14.0-alpha10"
 media3 = "1.10.0"
@@ -48,11 +53,14 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-recyclerview-selection = { group = "androidx.recyclerview", name = "recyclerview-selection", version.ref = "recyclerview-selection" }
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
 glide-okhttp3-integration = { group = "com.github.bumptech.glide", name = "okhttp3-integration", version.ref = "glide" }
+jxl-coder-glide = { group = "io.github.awxkee", name = "jxl-coder-glide", version.ref = "jxlCoderGlide" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 zoomimage-view-glide = { group = "io.github.panpf.zoomimage", name = "zoomimage-view-glide", version.ref = "zoomimage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 lineageos-generatebp = { id = "org.lineageos.generatebp", version.ref = "generateBp" }

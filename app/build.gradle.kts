@@ -5,6 +5,7 @@
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.lineageos.generatebp)
 }
 
@@ -74,9 +75,12 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.glide)
     implementation(libs.glide.okhttp3.integration)
+    implementation(libs.jxl.coder.glide)
     implementation(libs.material)
     implementation(libs.okhttp)
     implementation(libs.zoomimage.view.glide)
+
+    ksp(libs.glide.ksp)
 }
 
 generateBp {
