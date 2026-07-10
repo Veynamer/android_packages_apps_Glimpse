@@ -6,6 +6,7 @@
 package org.lineageos.glimpse.ui.dialogs
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.location.Address
@@ -27,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.exifinterface.media.ExifInterface
+import com.awxkee.jxlcoder.JxlCoder
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -164,9 +166,11 @@ class MediaInfoBottomSheetDialog(
                 cameraInfoListItem.supportingText,
             ).any { !it.isNullOrBlank() && it != unknownString }
 
+            val (mediaWidth, mediaHeight) = resolveMediaSize(contentResolver, media)
+
             mediaInfoListItem.supportingText = listOf(
                 media.mimeType,
-                "${media.width} x ${media.height}",
+                "$mediaWidth x $mediaHeight",
                 Formatter.formatFileSize(context, media.sizeBytes),
             ).joinToString(SEPARATOR)
 
@@ -214,6 +218,36 @@ class MediaInfoBottomSheetDialog(
                 locationInfoListItem.isVisible = true
             }
         }
+    }
+
+    /**
+     * [MediaStore]'s WIDTH/HEIGHT columns (exposed as [Media.width] and
+     * [Media.height]) are populated by the platform's media scanner, which
+     * has no metadata extractor for JPEG XL and always reports 0x0 for
+     * `.jxl` files. Fall back to asking jxl-coder to parse just the image
+     * header (not a full decode) in that case.
+     */
+    private fun resolveMediaSize(
+        contentResolver: ContentResolver,
+        media: Media,
+    ): Pair<Int, Int> {
+        if (media.width > 0 && media.height > 0) {
+            return media.width to media.height
+        }
+
+        if (media.mimeType == "image/jxl") {
+            val size = runCatching {
+                contentResolver.openInputStream(media.uri)?.use { inputStream ->
+                    JxlCoder.getSize(inputStream.readBytes())
+                }
+            }.getOrNull()
+
+            if (size != null) {
+                return size.width to size.height
+            }
+        }
+
+        return media.width to media.height
     }
 
     private fun updateLocation(addresses: List<Address>) {

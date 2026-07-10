@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.glide)
     implementation(libs.glide.okhttp3.integration)
+    implementation(libs.jxl.coder)
     implementation(libs.jxl.coder.glide)
     implementation(libs.material)
     implementation(libs.okhttp)
