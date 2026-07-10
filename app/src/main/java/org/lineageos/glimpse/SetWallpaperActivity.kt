@@ -9,23 +9,15 @@ import android.app.WallpaperManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Consumer
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.lineageos.glimpse.ext.load
-import org.lineageos.glimpse.ext.updateMargin
+import org.lineageos.glimpse.ui.screens.SetWallpaperScreen
+import org.lineageos.glimpse.ui.theme.GlimpseTheme
 
-class SetWallpaperActivity : AppCompatActivity(R.layout.activity_set_wallpaper) {
-    // Views
-    private val setWallpaperButton by lazy { findViewById<MaterialButton>(R.id.setWallpaperButton) }
-    private val wallpaperImageView by lazy { findViewById<ImageView>(R.id.wallpaperImageView) }
-
+class SetWallpaperActivity : AppCompatActivity() {
     // System services
     private val wallpaperManager by lazy { getSystemService(WallpaperManager::class.java) }
 
@@ -37,20 +29,6 @@ class SetWallpaperActivity : AppCompatActivity(R.layout.activity_set_wallpaper) 
 
         // Enable edge-to-edge
         enableEdgeToEdge()
-
-        // Insets
-        ViewCompat.setOnApplyWindowInsetsListener(setWallpaperButton) { _, windowInsets ->
-            val insets = windowInsets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
-            )
-
-            setWallpaperButton.updateMargin(
-                insets,
-                bottom = true,
-            )
-
-            windowInsets
-        }
 
         intentListener.accept(intent)
         addOnNewIntentListener(intentListener)
@@ -88,17 +66,16 @@ class SetWallpaperActivity : AppCompatActivity(R.layout.activity_set_wallpaper) 
             return
         }
 
-        wallpaperImageView.load(wallpaperUri)
-
-        // Set wallpaper
-        setWallpaperButton.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.style.Theme_Glimpse_SetWallpaperDialog)
-                .setTitle(R.string.set_wallpaper_dialog_title)
-                .setItems(R.array.set_wallpaper_items) { _, which ->
-                    val flags = positionToFlag[which]
-                    setWallpaper(wallpaperUri, flags)
-                    finish()
-                }.show()
+        setContent {
+            GlimpseTheme {
+                SetWallpaperScreen(
+                    wallpaperUri = wallpaperUri,
+                    onSetWallpaper = { targetIndex ->
+                        setWallpaper(wallpaperUri, positionToFlag[targetIndex])
+                        finish()
+                    },
+                )
+            }
         }
     }
 

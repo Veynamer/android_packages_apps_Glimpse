@@ -7,11 +7,14 @@
 agp = "9.1.0"
 activity = "1.12.0-alpha08"
 appcompat = "1.7.1"
+composeBom = "2026.06.00"
+composeCompiler = "2.2.10"
 constraintlayout = "2.2.1"
 core = "1.18.0-alpha01"
 exifinterface = "1.4.0-alpha01"
 fragment = "1.8.9"
 glide = "5.0.7"
+glideCompose = "1.0.0-beta09"
 jxlCoder = "2.6.1"
 ksp = "2.3.9"
 lifecycle = "2.10.0-alpha04"
@@ -30,6 +33,7 @@ generateBp = "+"
 [libraries]
 adobe-xmpcore = { group = "com.adobe.xmp", name = "xmpcore", version.ref = "xmpcore" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
@@ -49,7 +53,13 @@ androidx-preference = { group = "androidx.preference", name = "preference", vers
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-recyclerview-selection = { group = "androidx.recyclerview", name = "recyclerview-selection", version.ref = "recyclerview-selection" }
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glideCompose" }
 glide-ksp = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
 glide-okhttp3-integration = { group = "com.github.bumptech.glide", name = "okhttp3-integration", version.ref = "glide" }
 jxl-coder = { group = "io.github.awxkee", name = "jxl-coder", version.ref = "jxlCoder" }
@@ -60,5 +70,6 @@ zoomimage-view-glide = { group = "io.github.panpf.zoomimage", name = "zoomimage-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "composeCompiler" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 lineageos-generatebp = { id = "org.lineageos.generatebp", version.ref = "generateBp" }
