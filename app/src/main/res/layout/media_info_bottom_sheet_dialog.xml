@@ -10,7 +10,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     app:cardBackgroundColor="@android:color/transparent"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="28dp"
     app:cardElevation="0dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -82,6 +82,14 @@
             app:headlineText="Image.jpg"
             app:leadingIconImage="@drawable/ic_image"
             app:supportingText="image/jpg • 12.0MP • 3000 x 4000" />
+
+        <org.lineageos.glimpse.ui.views.ListItem
+            android:id="@+id/technicalInfoListItem"
+            style="@style/Theme.Glimpse.MediaInfoBottomSheetDialog.ListItem"
+            android:visibility="gone"
+            app:headlineText="24-70mm f/2.8"
+            app:leadingIconImage="@drawable/ic_settings"
+            app:supportingText="Flash fired • Auto white balance • +0.3 EV • Normal orientation" />
 
         <org.lineageos.glimpse.ui.views.ListItem
             android:id="@+id/locationInfoListItem"

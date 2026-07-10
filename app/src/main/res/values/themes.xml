@@ -8,6 +8,16 @@
     <style name="Theme.Glimpse" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
         <item name="windowActionModeOverlay">true</item>
+
+        <!-- Material You / Expressive shape scale, see shapes.xml -->
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Glimpse.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Glimpse.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Glimpse.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Glimpse.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Glimpse.ExtraLarge</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Glimpse.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Glimpse.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Glimpse.Large</item>
     </style>
 
     <!-- Top app bar option -->
@@ -25,6 +35,15 @@
     <!-- Media viewer -->
     <style name="Theme.Glimpse.MediaViewer" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Glimpse.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Glimpse.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Glimpse.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Glimpse.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Glimpse.ExtraLarge</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Glimpse.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Glimpse.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Glimpse.Large</item>
     </style>
 
     <!-- Media viewer bottom sheet -->

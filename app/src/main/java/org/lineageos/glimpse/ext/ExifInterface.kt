@@ -36,14 +36,26 @@ val ExifInterface.exposureTime
 val ExifInterface.isoSpeed
     get() = getAttributeInt(ExifInterface.TAG_ISO_SPEED)
 
+val ExifInterface.exposureBiasValue
+    get() = getAttributeDouble(ExifInterface.TAG_EXPOSURE_BIAS_VALUE)
+
+val ExifInterface.flash
+    get() = getAttributeInt(ExifInterface.TAG_FLASH)
+
 val ExifInterface.focalLength
     get() = getAttributeDouble(ExifInterface.TAG_FOCAL_LENGTH)
+
+val ExifInterface.lensModel
+    get() = getAttribute(ExifInterface.TAG_LENS_MODEL)
 
 val ExifInterface.make
     get() = getAttribute(ExifInterface.TAG_MAKE)
 
 val ExifInterface.model
     get() = getAttribute(ExifInterface.TAG_MODEL)
+
+val ExifInterface.orientation
+    get() = getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
 
 val ExifInterface.pixelXDimension
     get() = getAttributeInt(ExifInterface.TAG_PIXEL_X_DIMENSION)
@@ -62,6 +74,9 @@ var ExifInterface.userComment
     set(value) {
         setAttribute(ExifInterface.TAG_USER_COMMENT, value)
     }
+
+val ExifInterface.whiteBalance
+    get() = getAttributeInt(ExifInterface.TAG_WHITE_BALANCE)
 
 val ExifInterface.isSupportedFormatForSavingAttributes: Boolean
     get() {

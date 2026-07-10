@@ -80,6 +80,19 @@
     <string name="media_info_write_description_failed">Failed to change media description</string>
     <string name="media_info_location_loading_placeholder">Loading…</string>
     <string name="media_info_location_open_with">View the location with</string>
+    <string name="media_info_flash_fired">Flash fired</string>
+    <string name="media_info_flash_not_fired">No flash</string>
+    <string name="media_info_white_balance_auto">Auto white balance</string>
+    <string name="media_info_white_balance_manual">Manual white balance</string>
+    <string name="media_info_exposure_bias_value">%1$s EV</string>
+    <string name="media_info_orientation_normal">Normal orientation</string>
+    <string name="media_info_orientation_flip_horizontal">Flipped horizontally</string>
+    <string name="media_info_orientation_rotate_180">Rotated 180°</string>
+    <string name="media_info_orientation_flip_vertical">Flipped vertically</string>
+    <string name="media_info_orientation_transpose">Transposed</string>
+    <string name="media_info_orientation_rotate_90">Rotated 90°</string>
+    <string name="media_info_orientation_transverse">Transversed</string>
+    <string name="media_info_orientation_rotate_270">Rotated 270°</string>
 
     <!-- Intents handling -->
     <string name="intent_action_not_supported">Action not supported</string>

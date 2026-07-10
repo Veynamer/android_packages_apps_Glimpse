@@ -39,16 +39,21 @@ import org.lineageos.glimpse.ext.apertureValue
 import org.lineageos.glimpse.ext.artist
 import org.lineageos.glimpse.ext.copyright
 import org.lineageos.glimpse.ext.createWriteRequest
+import org.lineageos.glimpse.ext.exposureBiasValue
 import org.lineageos.glimpse.ext.exposureTime
+import org.lineageos.glimpse.ext.flash
 import org.lineageos.glimpse.ext.focalLength
 import org.lineageos.glimpse.ext.isSupportedFormatForSavingAttributes
 import org.lineageos.glimpse.ext.isoSpeed
+import org.lineageos.glimpse.ext.lensModel
 import org.lineageos.glimpse.ext.make
 import org.lineageos.glimpse.ext.model
+import org.lineageos.glimpse.ext.orientation
 import org.lineageos.glimpse.ext.round
 import org.lineageos.glimpse.ext.software
 import org.lineageos.glimpse.ext.toFraction
 import org.lineageos.glimpse.ext.userComment
+import org.lineageos.glimpse.ext.whiteBalance
 import org.lineageos.glimpse.models.Media
 import org.lineageos.glimpse.models.MediaType
 import org.lineageos.glimpse.ui.views.ListItem
@@ -69,6 +74,7 @@ class MediaInfoBottomSheetDialog(
     private val descriptionEditText by lazy { findViewById<EditText>(R.id.descriptionEditText)!! }
     private val locationInfoListItem by lazy { findViewById<ListItem>(R.id.locationInfoListItem)!! }
     private val mediaInfoListItem by lazy { findViewById<ListItem>(R.id.mediaInfoListItem)!! }
+    private val technicalInfoListItem by lazy { findViewById<ListItem>(R.id.technicalInfoListItem)!! }
     private val timeTextView by lazy { findViewById<TextView>(R.id.timeTextView)!! }
 
     // Coroutines
@@ -164,6 +170,70 @@ class MediaInfoBottomSheetDialog(
             cameraInfoListItem.isVisible = listOf(
                 cameraInfoListItem.headlineText,
                 cameraInfoListItem.supportingText,
+            ).any { !it.isNullOrBlank() && it != unknownString }
+
+            technicalInfoListItem.headlineText = exifInterface.lensModel ?: unknownString
+
+            technicalInfoListItem.supportingText = listOfNotNull(
+                exifInterface.flash?.let { flash ->
+                    context.resources.getString(
+                        when (flash and 0x1) {
+                            0x1 -> R.string.media_info_flash_fired
+                            else -> R.string.media_info_flash_not_fired
+                        }
+                    )
+                },
+                exifInterface.whiteBalance?.let { whiteBalance ->
+                    context.resources.getString(
+                        when (whiteBalance) {
+                            ExifInterface.WHITE_BALANCE_MANUAL ->
+                                R.string.media_info_white_balance_manual
+
+                            else -> R.string.media_info_white_balance_auto
+                        }
+                    )
+                },
+                exifInterface.exposureBiasValue?.takeIf { it != 0.0 }?.let {
+                    context.resources.getString(
+                        R.string.media_info_exposure_bias_value,
+                        "%+.1f".format(Locale.US, it),
+                    )
+                },
+                exifInterface.orientation.takeIf {
+                    it != ExifInterface.ORIENTATION_UNDEFINED
+                }?.let { orientation ->
+                    context.resources.getString(
+                        when (orientation) {
+                            ExifInterface.ORIENTATION_FLIP_HORIZONTAL ->
+                                R.string.media_info_orientation_flip_horizontal
+
+                            ExifInterface.ORIENTATION_ROTATE_180 ->
+                                R.string.media_info_orientation_rotate_180
+
+                            ExifInterface.ORIENTATION_FLIP_VERTICAL ->
+                                R.string.media_info_orientation_flip_vertical
+
+                            ExifInterface.ORIENTATION_TRANSPOSE ->
+                                R.string.media_info_orientation_transpose
+
+                            ExifInterface.ORIENTATION_ROTATE_90 ->
+                                R.string.media_info_orientation_rotate_90
+
+                            ExifInterface.ORIENTATION_TRANSVERSE ->
+                                R.string.media_info_orientation_transverse
+
+                            ExifInterface.ORIENTATION_ROTATE_270 ->
+                                R.string.media_info_orientation_rotate_270
+
+                            else -> R.string.media_info_orientation_normal
+                        }
+                    )
+                },
+            ).joinToString(SEPARATOR)
+
+            technicalInfoListItem.isVisible = listOf(
+                technicalInfoListItem.headlineText,
+                technicalInfoListItem.supportingText,
             ).any { !it.isNullOrBlank() && it != unknownString }
 
             val (mediaWidth, mediaHeight) = resolveMediaSize(contentResolver, media)
