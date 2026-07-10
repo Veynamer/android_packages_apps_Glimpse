@@ -177,7 +177,7 @@ class MediaInfoBottomSheetDialog(
             technicalInfoListItem.supportingText = listOfNotNull(
                 exifInterface.flash?.let { flash ->
                     context.resources.getString(
-                        when (flash and 0x1) {
+                        when (flash.toInt() and 0x1) {
                             0x1 -> R.string.media_info_flash_fired
                             else -> R.string.media_info_flash_not_fired
                         }
@@ -186,7 +186,7 @@ class MediaInfoBottomSheetDialog(
                 exifInterface.whiteBalance?.let { whiteBalance ->
                     context.resources.getString(
                         when (whiteBalance) {
-                            ExifInterface.WHITE_BALANCE_MANUAL ->
+                            ExifInterface.WHITE_BALANCE_MANUAL.toInt() -> 
                                 R.string.media_info_white_balance_manual
 
                             else -> R.string.media_info_white_balance_auto
