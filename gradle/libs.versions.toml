@@ -13,10 +13,10 @@ exifinterface = "1.4.0-alpha01"
 fragment = "1.8.9"
 glide = "5.0.5"
 jxlCoderGlide = "2.6.1"
-# NOTE: the KSP plugin version is tied to the Kotlin compiler version in use.
-# Update the "-1.0.x" suffix to match whatever Kotlin version AGP's built-in
-# Kotlin support pulls in for this project if the build fails to resolve it.
-ksp = "2.2.0-2.0.2"
+# NOTE: KSP versioning was decoupled from the Kotlin compiler version starting
+# with KSP 2.3.0 (plain semver, no more "-2.0.x" Kotlin-version suffix).
+# 2.3.1+ is required for compatibility with AGP 9's built-in Kotlin support.
+ksp = "2.3.9"
 lifecycle = "2.10.0-alpha04"
 material = "1.14.0-alpha10"
 media3 = "1.10.0"
