@@ -22,18 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:bar_height="4dp"
-        app:buffered_color="?attr/colorSurfaceVariant"
-        app:played_color="?attr/colorPrimary"
-        app:scrubber_color="?attr/colorPrimary"
-        app:scrubber_dragged_size="20dp"
-        app:scrubber_enabled_size="14dp"
-        app:show_next_button="false"
-        app:show_previous_button="false"
-        app:show_shuffle_button="false"
-        app:show_subtitle_button="true"
-        app:show_timeout="0"
-        app:touch_target_height="32dp"
-        app:unplayed_color="#4DFFFFFF" />
+        app:use_controller="false" />
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/playerControlsComposeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </FrameLayout>

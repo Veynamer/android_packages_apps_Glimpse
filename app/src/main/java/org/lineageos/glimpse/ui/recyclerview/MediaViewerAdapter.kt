@@ -8,12 +8,16 @@ package org.lineageos.glimpse.ui.recyclerview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.OptIn
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.ui.PlayerControlView
+import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,17 +26,24 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.lineageos.glimpse.R
-import org.lineageos.glimpse.ext.fade
 import org.lineageos.glimpse.ext.load
 import org.lineageos.glimpse.models.Media
 import org.lineageos.glimpse.models.MediaType
 import org.lineageos.glimpse.models.MotionPhoto
 import org.lineageos.glimpse.ui.MediaGestureListener
+import org.lineageos.glimpse.ui.player.VideoPlayerActions
+import org.lineageos.glimpse.ui.player.VideoPlayerControls
+import org.lineageos.glimpse.ui.theme.GlimpseTheme
 import org.lineageos.glimpse.viewmodels.LocalPlayerViewModel
 
 class MediaViewerAdapter(
     private val localPlayerViewModel: LocalPlayerViewModel,
     private val onNavigate: (forward: Boolean) -> Unit,
+    private val onToggleFavorite: (Media) -> Unit,
+    private val onShare: (Media) -> Unit,
+    private val onEdit: (Media) -> Unit,
+    private val onDelete: (Media) -> Unit,
+    private val onDeleteLongClick: (Media) -> Unit,
 ) : ListAdapter<Media, MediaViewerAdapter.MediaViewHolder>(UniqueItemDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MediaViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.media_view, parent, false),
@@ -57,11 +68,9 @@ class MediaViewerAdapter(
     inner class MediaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Views
         private val imageView = view.findViewById<GlideZoomImageView>(R.id.imageView)
-
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
-        private val playerControlView =
-            view.findViewById<PlayerControlView>(androidx.media3.ui.R.id.exo_controller)
         private val playerView = view.findViewById<PlayerView>(R.id.playerView)
+        private val playerControlsComposeView =
+            view.findViewById<ComposeView>(R.id.playerControlsComposeView)
 
         private var media: Media? = null
         private var motionPhoto: MotionPhoto? = null
@@ -71,7 +80,16 @@ class MediaViewerAdapter(
             onNavigate = onNavigate,
         )
 
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
+        // Compose player controls state - the single source of truth read by
+        // the composable set on playerControlsComposeView. Updated by the
+        // observers below instead of calling View methods on a
+        // PlayerControlView (there no longer is one).
+        private var controlsPlayer by mutableStateOf<Player?>(null)
+        private var controlsVisible by mutableStateOf(false)
+        private var controlsShowSeekButtons by mutableStateOf(true)
+        private var controlsMedia by mutableStateOf<Media?>(null)
+        private var controlsReadOnly by mutableStateOf(true)
+
         private val mediaPositionObserver: (Int?) -> Unit = { currentPosition: Int? ->
             isCurrentlyDisplayedView = currentPosition == bindingAdapterPosition
 
@@ -80,12 +98,9 @@ class MediaViewerAdapter(
 
             imageView.isVisible = !isNowVideoPlayer
             playerView.isVisible = isNowVideoPlayer
+            playerControlsComposeView.isVisible = isNowVideoPlayer
 
-            if (!isNowVideoPlayer || localPlayerViewModel.fullscreenMode.value) {
-                playerControlView.hideImmediately()
-            } else {
-                playerControlView.show()
-            }
+            controlsVisible = isNowVideoPlayer && !localPlayerViewModel.fullscreenMode.value
 
             val player = when (isNowVideoPlayer) {
                 true -> localPlayerViewModel.exoPlayer
@@ -93,14 +108,14 @@ class MediaViewerAdapter(
             }
 
             playerView.player = player
-            playerControlView.player = player
+            controlsPlayer = player
 
             // Update media gesture listener
             updateMediaGestureListener(isNowVideoPlayer)
 
             // Update native seek buttons visibility
             if (isNowVideoPlayer) {
-                updateNativeSeekButtons()
+                controlsShowSeekButtons = !localPlayerViewModel.hideNativeSeekButtons
             }
         }
 
@@ -109,25 +124,29 @@ class MediaViewerAdapter(
                 val (topHeight, bottomHeight) = sheetsHeight
 
                 // Place the player controls between the two sheets
-                playerControlView.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                playerControlsComposeView.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                     topMargin = topHeight
                     bottomMargin = bottomHeight
                 }
             }
         }
 
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
         private val fullscreenModeObserver = { fullscreenMode: Boolean ->
             if (media?.mediaType == MediaType.VIDEO) {
-                playerControlView.fade(!fullscreenMode)
+                controlsVisible = !fullscreenMode
             }
         }
 
         private val displayedMediaToMotionPhotoObserver = { it: Pair<Media?, MotionPhoto?> ->
             val (displayedMedia, motionPhoto) = it
             this.motionPhoto = motionPhoto
+            controlsMedia = displayedMedia
             // Trigger a refresh of the UI
             mediaPositionObserver(localPlayerViewModel.mediaPosition.value)
+        }
+
+        private val readOnlyObserver = { readOnly: Boolean ->
+            controlsReadOnly = readOnly
         }
 
         private var observersJob: Job? = null
@@ -143,9 +162,49 @@ class MediaViewerAdapter(
             // A single touch listener handles both edge taps and double taps.
             imageView.setOnTouchListener(mediaGestureListener)
             playerView.setOnTouchListener(mediaGestureListener)
+
+            // RecyclerView items get detached/reattached as they're recycled,
+            // not just destroyed with the Fragment/Activity - dispose the
+            // composition precisely then instead of tying it to a
+            // ViewTreeLifecycleOwner that outlives recycling.
+            playerControlsComposeView.setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnDetachedFromWindowOrReleasedFromPool
+            )
+            playerControlsComposeView.setContent {
+                GlimpseTheme {
+                    VideoPlayerControls(
+                        player = controlsPlayer,
+                        visible = controlsVisible,
+                        showSeekButtons = controlsShowSeekButtons,
+                        onTogglePlayPause = {
+                            controlsPlayer?.let { player ->
+                                when (player.isPlaying) {
+                                    true -> player.pause()
+                                    false -> player.play()
+                                }
+                            }
+                        },
+                        actions = controlsMedia?.takeIf {
+                            it.mediaType == MediaType.VIDEO
+                        }?.let { currentMedia ->
+                            VideoPlayerActions(
+                                isFavorite = currentMedia.isFavorite,
+                                isTrashed = currentMedia.isTrashed,
+                                showFavorite = !controlsReadOnly,
+                                showEdit = !controlsReadOnly,
+                                showDelete = !controlsReadOnly,
+                                onToggleFavorite = { onToggleFavorite(currentMedia) },
+                                onShare = { onShare(currentMedia) },
+                                onEdit = { onEdit(currentMedia) },
+                                onDelete = { onDelete(currentMedia) },
+                                onDeleteLongClick = { onDeleteLongClick(currentMedia) },
+                            )
+                        },
+                    )
+                }
+            }
         }
 
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
         private fun updateMediaGestureListener(isVideoPlayer: Boolean) {
             mediaGestureListener.edgeTapNavigationEnabled =
                 localPlayerViewModel.edgeTapNavigationEnabled
@@ -160,15 +219,6 @@ class MediaViewerAdapter(
                 true -> localPlayerViewModel.exoPlayer
                 false -> null
             }
-        }
-
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
-        private fun updateNativeSeekButtons() {
-            val hideButtons = localPlayerViewModel.hideNativeSeekButtons
-
-            // Update PlayerView to show/hide rewind and fast-forward buttons
-            playerView.setShowRewindButton(!hideButtons)
-            playerView.setShowFastForwardButton(!hideButtons)
         }
 
         fun bind(media: Media) {
@@ -193,17 +243,19 @@ class MediaViewerAdapter(
                         displayedMediaToMotionPhotoObserver
                     )
                 }
+                launch {
+                    localPlayerViewModel.readOnly.collectLatest(readOnlyObserver)
+                }
             }
         }
 
-        @OptIn(androidx.media3.common.util.UnstableApi::class)
         fun onViewDetachedFromWindow() {
             observersJob?.cancel()
             observersJob = null
 
             mediaGestureListener.player = null
             playerView.player = null
-            playerControlView.player = null
+            controlsPlayer = null
         }
     }
 }

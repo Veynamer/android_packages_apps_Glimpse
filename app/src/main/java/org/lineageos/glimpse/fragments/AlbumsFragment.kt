@@ -42,6 +42,7 @@ import org.lineageos.glimpse.utils.PermissionsChecker
 import org.lineageos.glimpse.utils.PermissionsUtils
 import org.lineageos.glimpse.viewmodels.AlbumsViewModel
 import org.lineageos.glimpse.viewmodels.IntentsViewModel
+import org.lineageos.glimpse.viewmodels.MainViewModel
 
 /**
  * An albums list visualizer.
@@ -50,10 +51,14 @@ class AlbumsFragment : Fragment(R.layout.fragment_albums) {
     // View models
     private val albumsViewModel by viewModels<AlbumsViewModel>()
     private val intentsViewModel by activityViewModels<IntentsViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
     // Views
     private val noMediaLinearLayout by getViewProperty<LinearLayout>(R.id.noMediaLinearLayout)
     private val recyclerView by getViewProperty<RecyclerView>(R.id.recyclerView)
+
+    // Insets
+    private var systemBarsBottomInset = 0
 
     // RecyclerView
     private val adapter by lazy {
@@ -129,6 +134,8 @@ class AlbumsFragment : Fragment(R.layout.fragment_albums) {
                 start = true,
                 end = true,
             )
+            systemBarsBottomInset = insets.bottom
+            updateRecyclerViewBottomPadding()
 
             windowInsets
         }
@@ -160,8 +167,23 @@ class AlbumsFragment : Fragment(R.layout.fragment_albums) {
         recyclerView.layoutManager = AlbumThumbnailLayoutManager(requireContext())
     }
 
+    private fun updateRecyclerViewBottomPadding() {
+        recyclerView.setPadding(
+            recyclerView.paddingLeft,
+            recyclerView.paddingTop,
+            recyclerView.paddingRight,
+            systemBarsBottomInset + mainViewModel.navigationBarHeight.value,
+        )
+    }
+
     private suspend fun loadData() {
         coroutineScope {
+            launch {
+                mainViewModel.navigationBarHeight.collectLatest {
+                    updateRecyclerViewBottomPadding()
+                }
+            }
+
             launch {
                 intentsViewModel.parsedIntent.collectLatest {
                     when (it) {

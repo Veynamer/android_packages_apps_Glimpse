@@ -7,14 +7,16 @@ package org.lineageos.glimpse.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.shape.RoundedCornerShape
 
 /**
  * Glimpse's Material You / Expressive shape scale.
@@ -35,14 +37,18 @@ val GlimpseShapes = Shapes(
 /**
  * Glimpse's Compose theme.
  *
- * Wraps [MaterialTheme] with the platform's dynamic (Material You) color
- * scheme where available - this is a system Gallery app on LineageOS, which
- * already ships Monet/dynamic color system-wide, so this matches what the
- * rest of the (View-based) UI resolves via `Theme.Material3.DayNight`.
+ * Wraps [MaterialExpressiveTheme] (Material 3 Expressive: adds the
+ * "spirited", physics-based expressive [MotionScheme] on top of regular
+ * [androidx.compose.material3.MaterialTheme]) with the platform's dynamic
+ * (Material You) color scheme where available - this is a system Gallery
+ * app on LineageOS, which already ships Monet/dynamic color system-wide, so
+ * this matches what the rest of the (View-based) UI resolves via
+ * `Theme.Material3.DayNight`.
  *
  * On API < 31 (no dynamic color support), falls back to the Material 3
  * baseline color scheme.
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun GlimpseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -60,8 +66,9 @@ fun GlimpseTheme(
         else -> androidx.compose.material3.lightColorScheme()
     }
 
-    MaterialTheme(
+    MaterialExpressiveTheme(
         colorScheme = colorScheme,
+        motionScheme = MotionScheme.expressive(),
         shapes = GlimpseShapes,
         content = content,
     )

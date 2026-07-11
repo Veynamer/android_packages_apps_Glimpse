@@ -86,6 +86,7 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
     private val keyguardManager by lazy { getSystemService(KeyguardManager::class.java) }
 
     private var lastVideoUriPlayed: Uri? = null
+    private var isCurrentMediaVideo = false
 
     // Adapter
     private val mediaViewerAdapter by lazy {
@@ -104,6 +105,31 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
                     if (newPosition in 0 until adapter.itemCount) {
                         viewPager.setCurrentItem(newPosition, true)
                     }
+                }
+            },
+            onToggleFavorite = { media ->
+                favoriteContract.launch(
+                    contentResolver.createFavoriteRequest(!media.isFavorite, media.uri)
+                )
+            },
+            onShare = { media ->
+                dismissKeyguardAndRun {
+                    startActivity(Intent.createChooser(buildShareIntent(media), null))
+                }
+            },
+            onEdit = { media ->
+                dismissKeyguardAndRun {
+                    startActivity(Intent.createChooser(buildEditIntent(media), null))
+                }
+            },
+            onDelete = { media ->
+                dismissKeyguardAndRun {
+                    trashMedia(media)
+                }
+            },
+            onDeleteLongClick = { media ->
+                MediaDialogsUtils.openDeleteForeverDialog(this, media.uri) { uris ->
+                    deleteUriContract.launch(contentResolver.createDeleteRequest(*uris))
                 }
             },
         )
@@ -421,7 +447,7 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
             launch {
                 viewModel.fullscreenMode.collectLatest { fullscreenMode ->
                     appBarLayout.fade(!fullscreenMode)
-                    bottomSheetLinearLayout.fade(!fullscreenMode)
+                    updateBottomSheetVisibility(fullscreenMode = fullscreenMode)
 
                     window.setBarsVisibility(systemBars = !fullscreenMode)
 
@@ -442,6 +468,12 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
                         toolbar.title = ""
                         toolbar.subtitle = ""
                     }
+
+                    // For videos, the file actions (favorite/share/edit/delete) are
+                    // merged into VideoPlayerControls instead of this sheet.
+                    isCurrentMediaVideo = displayedMedia?.mediaType == MediaType.VIDEO
+                    updateBottomSheetVisibility(fullscreenMode = viewModel.fullscreenMode.value)
+                    updateSheetsHeight()
 
                     // Update favorite button
                     val isFavorite = displayedMedia?.isFavorite ?: false
@@ -567,15 +599,29 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
         )
     }
 
+    private fun updateBottomSheetVisibility(fullscreenMode: Boolean) {
+        // Videos merge their file actions into VideoPlayerControls instead -
+        // never show this sheet for them, regardless of fullscreen state.
+        bottomSheetLinearLayout.fade(!fullscreenMode && !isCurrentMediaVideo)
+    }
+
     private fun updateSheetsHeight() {
         appBarLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         bottomSheetLinearLayout.measure(
             View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED
         )
 
+        // Don't read bottomSheetLinearLayout.isVisible here: it's driven by
+        // an animated fade() and only flips at the end of the animation, so
+        // it can briefly lag behind the actual target state computed below.
+        val bottomSheetHeight = when (isCurrentMediaVideo) {
+            true -> 0
+            false -> bottomSheetLinearLayout.measuredHeight
+        }
+
         viewModel.setSheetsHeight(
             appBarLayout.measuredHeight,
-            bottomSheetLinearLayout.measuredHeight,
+            bottomSheetHeight,
         )
     }
 

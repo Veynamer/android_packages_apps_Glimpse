@@ -93,6 +93,10 @@
     <string name="media_info_orientation_rotate_90">Rotated 90°</string>
     <string name="media_info_orientation_transverse">Transversed</string>
     <string name="media_info_orientation_rotate_270">Rotated 270°</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="seek_back">Seek back 10 seconds</string>
+    <string name="seek_forward">Seek forward 10 seconds</string>
 
     <!-- Intents handling -->
     <string name="intent_action_not_supported">Action not supported</string>

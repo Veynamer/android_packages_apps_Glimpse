@@ -186,7 +186,7 @@ class MediaInfoBottomSheetDialog(
                 exifInterface.whiteBalance?.let { whiteBalance ->
                     context.resources.getString(
                         when (whiteBalance) {
-                            ExifInterface.WHITE_BALANCE_MANUAL.toInt() -> 
+                            ExifInterface.WHITE_BALANCE_MANUAL.toInt() ->
                                 R.string.media_info_white_balance_manual
 
                             else -> R.string.media_info_white_balance_auto

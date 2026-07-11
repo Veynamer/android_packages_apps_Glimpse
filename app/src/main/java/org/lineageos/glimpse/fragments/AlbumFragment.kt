@@ -70,6 +70,7 @@ import org.lineageos.glimpse.utils.PermissionsChecker
 import org.lineageos.glimpse.utils.PermissionsUtils
 import org.lineageos.glimpse.viewmodels.AlbumViewModel
 import org.lineageos.glimpse.viewmodels.IntentsViewModel
+import org.lineageos.glimpse.viewmodels.MainViewModel
 import kotlin.reflect.safeCast
 
 /**
@@ -79,6 +80,7 @@ class AlbumFragment : Fragment(R.layout.fragment_album) {
     // View models
     private val viewModel by viewModels<AlbumViewModel>()
     private val intentsViewModel by activityViewModels<IntentsViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
     // Views
     private val appBarLayout by getViewProperty<AppBarLayout>(R.id.appBarLayout)
@@ -98,6 +100,9 @@ class AlbumFragment : Fragment(R.layout.fragment_album) {
 
     // Selection
     private var selectionTracker: SelectionTracker<Media>? = null
+
+    // Insets
+    private var systemBarsBottomInset = 0
 
     private val selectionTrackerObserver =
         object : SelectionTracker.SelectionObserver<Media>() {
@@ -285,7 +290,8 @@ class AlbumFragment : Fragment(R.layout.fragment_album) {
                 leftMargin = insets.left
                 rightMargin = insets.right
             }
-            recyclerView.updatePadding(bottom = insets.bottom)
+            systemBarsBottomInset = insets.bottom
+            updateRecyclerViewBottomPadding()
 
             windowInsets
         }
@@ -406,8 +412,29 @@ class AlbumFragment : Fragment(R.layout.fragment_album) {
         )
     }
 
+    private fun updateRecyclerViewBottomPadding() {
+        val extraBottom = when (hideToolbar) {
+            true -> mainViewModel.navigationBarHeight.value
+            false -> 0
+        }
+
+        recyclerView.updatePadding(bottom = systemBarsBottomInset + extraBottom)
+    }
+
     private suspend fun loadData() {
         coroutineScope {
+            if (hideToolbar) {
+                // Only the Reels tab hosted in MainFragment's ViewPager2
+                // overlaps the floating navigation bar - the standalone
+                // AlbumFragment destination (opened from AlbumsFragment)
+                // doesn't have one.
+                launch {
+                    mainViewModel.navigationBarHeight.collectLatest {
+                        updateRecyclerViewBottomPadding()
+                    }
+                }
+            }
+
             launch {
                 intentsViewModel.parsedIntent.collectLatest {
                     when (it) {

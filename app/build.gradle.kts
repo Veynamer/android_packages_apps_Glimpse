@@ -12,14 +12,14 @@ plugins {
 
 android {
     namespace = "org.lineageos.glimpse"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "org.lineageos.glimpse"
         minSdk = 30
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
     }
 
     buildTypes {
@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)

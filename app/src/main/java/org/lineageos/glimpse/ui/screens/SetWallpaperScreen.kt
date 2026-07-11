@@ -6,22 +6,26 @@
 package org.lineageos.glimpse.ui.screens
 
 import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,13 +41,14 @@ import org.lineageos.glimpse.R
 
 /**
  * Full-screen wallpaper preview with a "Set wallpaper" action that opens a
- * dialog to choose the target (home / lock / both).
+ * dialog to choose the target (home / lock / both) via an Expressive
+ * single-select [ToggleButton] group.
  *
  * @param wallpaperUri The wallpaper image to preview
  * @param onSetWallpaper Called with the chosen target's index into
  *   R.array.set_wallpaper_items (home screen / lock screen / both)
  */
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SetWallpaperScreen(
     wallpaperUri: Uri,
@@ -51,6 +56,7 @@ fun SetWallpaperScreen(
     modifier: Modifier = Modifier,
 ) {
     var showTargetDialog by remember { mutableStateOf(false) }
+    var selectedTargetIndex by remember { mutableIntStateOf(0) }
 
     Box(modifier = modifier.fillMaxSize()) {
         GlideImage(
@@ -78,24 +84,36 @@ fun SetWallpaperScreen(
             onDismissRequest = { showTargetDialog = false },
             title = { Text(stringResource(R.string.set_wallpaper_dialog_title)) },
             text = {
-                Column {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(
+                        ButtonGroupDefaults.ConnectedSpaceBetween
+                    ),
+                ) {
                     targets.forEachIndexed { index, target ->
-                        TextButton(
-                            onClick = {
-                                showTargetDialog = false
-                                onSetWallpaper(index)
-                            },
-                            modifier = Modifier.fillMaxWidth(),
+                        ToggleButton(
+                            checked = selectedTargetIndex == index,
+                            onCheckedChange = { selectedTargetIndex = index },
                         ) {
-                            Text(
-                                text = target,
-                                modifier = Modifier.fillMaxWidth(),
-                            )
+                            Text(target)
                         }
                     }
                 }
             },
-            confirmButton = {},
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showTargetDialog = false
+                        onSetWallpaper(selectedTargetIndex)
+                    },
+                ) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTargetDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
         )
     }
 }
