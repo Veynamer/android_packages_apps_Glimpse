@@ -8,7 +8,7 @@
 android_library_import {
     name: "Glimpse_androidx.media3_media3-common",
     aars: ["androidx/media3/media3-common/1.10.0/media3-common-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -24,7 +24,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-common-ktx",
     aars: ["androidx/media3/media3-common-ktx/1.10.0/media3-common-ktx-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -42,7 +42,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-container",
     aars: ["androidx/media3/media3-container/1.10.0/media3-container-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -57,7 +57,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-database",
     aars: ["androidx/media3/media3-database/1.10.0/media3-database-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -72,7 +72,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-datasource",
     aars: ["androidx/media3/media3-datasource/1.10.0/media3-datasource-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -89,7 +89,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-decoder",
     aars: ["androidx/media3/media3-decoder/1.10.0/media3-decoder-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -104,7 +104,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-exoplayer",
     aars: ["androidx/media3/media3-exoplayer/1.10.0/media3-exoplayer-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -126,7 +126,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-exoplayer-dash",
     aars: ["androidx/media3/media3-exoplayer-dash/1.10.0/media3-exoplayer-dash-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -141,7 +141,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-exoplayer-hls",
     aars: ["androidx/media3/media3-exoplayer-hls/1.10.0/media3-exoplayer-hls-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -156,7 +156,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-exoplayer-rtsp",
     aars: ["androidx/media3/media3-exoplayer-rtsp/1.10.0/media3-exoplayer-rtsp-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -171,7 +171,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-exoplayer-smoothstreaming",
     aars: ["androidx/media3/media3-exoplayer-smoothstreaming/1.10.0/media3-exoplayer-smoothstreaming-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -186,7 +186,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-extractor",
     aars: ["androidx/media3/media3-extractor/1.10.0/media3-extractor-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -203,7 +203,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_androidx.media3_media3-ui",
     aars: ["androidx/media3/media3-ui/1.10.0/media3-ui-1.10.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -219,7 +219,7 @@ android_library_import {
 java_import {
     name: "Glimpse_com.adobe.xmp_xmpcore",
     jars: ["com/adobe/xmp/xmpcore/6.1.11/xmpcore-6.1.11.jar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -232,7 +232,7 @@ java_import {
 java_import {
     name: "Glimpse_com.github.bumptech.glide_annotations",
     jars: ["com/github/bumptech/glide/annotations/5.0.7/annotations-5.0.7.jar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -245,7 +245,7 @@ java_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_compose",
     aars: ["com/github/bumptech/glide/compose/1.0.0-beta09/compose-1.0.0-beta09.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -267,7 +267,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_disklrucache",
     aars: ["com/github/bumptech/glide/disklrucache/5.0.7/disklrucache-5.0.7.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -280,7 +280,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_gifdecoder",
     aars: ["com/github/bumptech/glide/gifdecoder/5.0.7/gifdecoder-5.0.7.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -294,7 +294,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_glide",
     aars: ["com/github/bumptech/glide/glide/5.0.7/glide-5.0.7.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -314,7 +314,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_ktx",
     aars: ["com/github/bumptech/glide/ktx/1.0.0-beta09/ktx-1.0.0-beta09.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -331,7 +331,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_okhttp3-integration",
     aars: ["com/github/bumptech/glide/okhttp3-integration/5.0.7/okhttp3-integration-5.0.7.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -347,7 +347,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.github.bumptech.glide_recyclerview-integration",
     aars: ["com/github/bumptech/glide/recyclerview-integration/5.0.7/recyclerview-integration-5.0.7.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -360,7 +360,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.google.accompanist_accompanist-drawablepainter",
     aars: ["com/google/accompanist/accompanist-drawablepainter/0.25.1/accompanist-drawablepainter-0.25.1.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -374,7 +374,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_com.google.android.material_material",
     aars: ["com/google/android/material/material/1.14.0-alpha10/material-1.14.0-alpha10.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -406,7 +406,7 @@ android_library_import {
 
 java_library_static {
     name: "Glimpse_com.squareup.okhttp3_okhttp",
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -420,7 +420,7 @@ java_library_static {
 android_library_import {
     name: "Glimpse_com.squareup.okhttp3_okhttp-android",
     aars: ["com/squareup/okhttp3/okhttp-android/5.3.2/okhttp-release.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -436,7 +436,7 @@ android_library_import {
 
 java_library_static {
     name: "Glimpse_com.squareup.okio_okio",
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -450,7 +450,7 @@ java_library_static {
 java_import {
     name: "Glimpse_com.squareup.okio_okio-jvm",
     jars: ["com/squareup/okio/okio-jvm/3.16.4/okio-jvm-3.16.4.jar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -464,7 +464,7 @@ java_import {
 android_library_import {
     name: "Glimpse_io.github.awxkee_jxl-coder",
     aars: ["io/github/awxkee/jxl-coder/2.6.1/jxl-coder-2.6.1-release.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -482,7 +482,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_io.github.awxkee_jxl-coder-glide",
     aars: ["io/github/awxkee/jxl-coder-glide/2.6.1/jxl-coder-glide-2.6.1-release.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -500,7 +500,7 @@ android_library_import {
 
 java_library_static {
     name: "Glimpse_io.github.panpf.zoomimage_zoomimage-core",
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -514,7 +514,7 @@ java_library_static {
 android_library_import {
     name: "Glimpse_io.github.panpf.zoomimage_zoomimage-core-android",
     aars: ["io/github/panpf/zoomimage/zoomimage-core-android/1.4.0/zoomimage-core-release.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -533,7 +533,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_io.github.panpf.zoomimage_zoomimage-core-glide",
     aars: ["io/github/panpf/zoomimage/zoomimage-core-glide/1.4.0/zoomimage-core-glide-1.4.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -549,7 +549,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_io.github.panpf.zoomimage_zoomimage-view",
     aars: ["io/github/panpf/zoomimage/zoomimage-view/1.4.0/zoomimage-view-1.4.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",
@@ -566,7 +566,7 @@ android_library_import {
 android_library_import {
     name: "Glimpse_io.github.panpf.zoomimage_zoomimage-view-glide",
     aars: ["io/github/panpf/zoomimage/zoomimage-view-glide/1.4.0/zoomimage-view-glide-1.4.0.aar"],
-    sdk_version: "36",
+    sdk_version: "37",
     min_sdk_version: "30",
     apex_available: [
         "//apex_available:platform",

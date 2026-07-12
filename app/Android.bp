@@ -14,13 +14,13 @@ android_app {
     resource_dirs: ["src/main/res"],
     manifest: "src/main/AndroidManifest.xml",
 
-    sdk_version: "36",
+    sdk_version: "37",
     product_specific: true,
 
     aaptflags: [
         // DO NOT EDIT THIS SECTION MANUALLY
         "--version-name",
-        "1.0",
+        "1.1",
         "--version-code",
         "1",
     ],
@@ -49,6 +49,8 @@ android_app {
         "androidx.compose.animation_animation-core",
         "androidx.compose.foundation_foundation",
         "androidx.compose.foundation_foundation-layout",
+        "androidx.compose.material_material-icons-core",
+        "androidx.compose.material_material-icons-extended",
         "androidx.compose.material_material-ripple",
         "androidx.compose.material3_material3",
         "androidx.compose.runtime_runtime",
